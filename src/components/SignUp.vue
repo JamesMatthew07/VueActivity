@@ -66,6 +66,7 @@ const SignUp = reactive<SignUp>({
 })
 
 // Custom password validation
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const validatePass = (rule: any, value: any, callback: any) => {
   if (SignUp.Password === '') {
     callback(new Error('Please input the password'))
@@ -74,6 +75,7 @@ const validatePass = (rule: any, value: any, callback: any) => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password again'))

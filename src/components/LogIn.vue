@@ -1,13 +1,27 @@
 <template>
-  <el-form ref="logInFormRef" :model="LogInForm" :rules="LogInFormRules">
-    <el-form-item prop="UserName">
-      <el-input v-model="LogInForm.UserName" placeholder="Full Name" type="text"></el-input>
-    </el-form-item>
-    <el-form-item prop="Password">
-      <el-input v-model="LogInForm.Password" placeholder="Password" type="password"></el-input>
-    </el-form-item>
-    <el-button type="primary" @click="GoToDisplayStudentInformation">Log In</el-button>
-  </el-form>
+  <div class="LogInFormContainer">
+    <el-form ref="logInFormRef" :model="LogInForm" :rules="LogInFormRules">
+      <el-form-item prop="UserName">
+        <el-input
+          v-model="LogInForm.UserName"
+          placeholder="Username"
+          type="text"
+          :prefix-icon="User"
+        ></el-input>
+      </el-form-item>
+      <el-form-item prop="Password">
+        <el-input
+          v-model="LogInForm.Password"
+          placeholder="Password"
+          type="password"
+          :prefix-icon="Lock"
+        ></el-input>
+      </el-form-item>
+      <!-- <p class="forgotPassword"><a>Forgot Password?</a></p> -->
+      <el-button type="primary" @click="GoToDisplayStudentInformation">Log In</el-button>
+      <p>Don't have an account? <a @click="GoToSignUp">Sign Up</a></p>
+    </el-form>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -15,6 +29,7 @@ import { ElForm } from 'element-plus'
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useInputStore } from '@/stores/studentInfo'
+import { User, Lock } from '@element-plus/icons-vue'
 
 const inputUser = useInputStore()
 
@@ -31,8 +46,8 @@ const LogInForm = reactive<LogInForm>({
 })
 
 const LogInFormRules = reactive({
-  FullName: [{ required: true, message: 'Please input full name', trigger: 'blur' }],
-  Password: [{ required: true, message: 'Please input full name', trigger: 'blur' }],
+  FullName: [{ required: true, message: 'Please input username', trigger: 'blur' }],
+  Password: [{ required: true, message: 'Please input password', trigger: 'blur' }],
 })
 
 const router = useRouter()
@@ -50,6 +65,10 @@ const GoToDisplayStudentInformation = () => {
       console.log('Validation Failed')
     }
   })
+}
+
+const GoToSignUp = () => {
+  router.push('/SignUp')
 }
 </script>
 
@@ -74,11 +93,25 @@ body {
 .el-button {
   background-color: white;
   color: black;
+  margin-top: 2vh;
 }
 
 .el-input::placeholder,
 .el-button::placeholder {
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 300;
 }
+
+.el-input__inner {
+  color: white;
+  font-size: 14px !important;
+}
+
+.forgotPassword {
+  margin-top: 0%;
+}
+
+/* .el-form-item {
+  border: 2px solid red;
+} */
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <el-card v-for="(student, index) in StudentInfo" :key="index">
-    {{ student.UserName }}
-    {{ student.FirstName }}
+  <el-card v-for="(user, index) in StudentInfo" :key="index">
+    {{ user.UserName }}
+    {{ user.FirstName }}
   </el-card>
 </template>
 
