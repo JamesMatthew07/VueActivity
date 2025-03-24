@@ -1,7 +1,7 @@
 <template>
   <el-form ref="logInFormRef" :model="LogInForm" :rules="LogInFormRules">
-    <el-form-item prop="FullName">
-      <el-input v-model="LogInForm.FullName" placeholder="Full Name" type="text"></el-input>
+    <el-form-item prop="UserName">
+      <el-input v-model="LogInForm.UserName" placeholder="Full Name" type="text"></el-input>
     </el-form-item>
     <el-form-item prop="Password">
       <el-input v-model="LogInForm.Password" placeholder="Password" type="password"></el-input>
@@ -14,16 +14,19 @@
 import { ElForm } from 'element-plus'
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import { useInputStore } from '@/stores/studentInfo'
+
+const inputUser = useInputStore()
 
 interface LogInForm {
-  FullName: string
+  UserName: string
   Password: string
 }
 
 const logInFormRef = ref<InstanceType<typeof ElForm>>()
 
 const LogInForm = reactive<LogInForm>({
-  FullName: '',
+  UserName: '',
   Password: '',
 })
 
@@ -34,15 +37,19 @@ const LogInFormRules = reactive({
 
 const router = useRouter()
 
-const GoToDisplayStudentInformation = async () => {
-  if (!logInFormRef.value) return
-
-  try {
-    await logInFormRef.value.validate()
-    router.push('/DisplayStudentInformation')
-  } catch (errors) {
-    console.log('Validation Failed:', errors)
-  }
+const GoToDisplayStudentInformation = () => {
+  logInFormRef.value?.validate((valid) => {
+    if (valid) {
+      const isLoggedIn = inputUser.LogIn(LogInForm.UserName, LogInForm.Password)
+      if (isLoggedIn) {
+        router.push('/DisplayStudentInformation')
+      } else {
+        console.log('Invalid Credentials')
+      }
+    } else {
+      console.log('Validation Failed')
+    }
+  })
 }
 </script>
 

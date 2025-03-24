@@ -37,6 +37,9 @@
 import { reactive, ref } from 'vue'
 import { ElForm, type FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router'
+import { useInputStore } from '@/stores/studentInfo'
+
+const inputUser = useInputStore()
 
 interface SignUp {
   UserName: string
@@ -62,21 +65,11 @@ const SignUp = reactive<SignUp>({
   ConfirmPassword: '',
 })
 
-// const validatePass = (rule: any, value: any, callback: any) => {
-//   if (SignUp.ConfirmPassword !== '') {
-//     if (!SignUpRef.value) return
-//     SignUpRef.value.validateField('ConfirmPassword')
-//   }
-//   callback()
-// }
+// Custom password validation
 const validatePass = (rule: any, value: any, callback: any) => {
   if (SignUp.Password === '') {
     callback(new Error('Please input the password'))
   } else {
-    if (SignUp.ConfirmPassword !== '' && SignUpRef.value) {
-      if (!SignUpRef.value) return
-      SignUpRef.value.validateField('ConfirmPassword')
-    }
     callback()
   }
 }
@@ -91,50 +84,45 @@ const validatePass2 = (rule: any, value: any, callback: any) => {
   }
 }
 
+// Validation rules
 const SignUpRules = reactive({
-  UserName: [{ required: true, message: 'Please input full name', trigger: 'blur' }],
-  FirstName: [{ required: true, message: 'Please input full name', trigger: 'blur' }],
-  MiddleName: [{ required: true, message: 'Please input full name', trigger: 'blur' }],
-  LastName: [{ required: true, message: 'Please input full name', trigger: 'blur' }],
-  Birthday: [{ required: true, message: 'Please input full name', trigger: 'blur' }],
-  Age: [{ required: true, message: 'Please input full name', trigger: 'blur' }],
+  UserName: [{ required: true, message: 'Please input your username', trigger: 'blur' }],
+  FirstName: [{ required: true, message: 'Please input your first name', trigger: 'blur' }],
+  MiddleName: [{ required: true, message: 'Please input your middle name', trigger: 'blur' }],
+  LastName: [{ required: true, message: 'Please input your last name', trigger: 'blur' }],
+  Birthday: [{ required: true, message: 'Please input your birthday', trigger: 'blur' }],
+  Age: [{ required: true, message: 'Please input your age', trigger: 'blur' }],
   Password: [
     {
-      validation: validatePass,
+      validator: validatePass,
       required: true,
-      message: 'Please input full name',
+      message: 'Please input your password',
       trigger: 'blur',
     },
   ],
   ConfirmPassword: [
     {
-      validation: validatePass2,
+      validator: validatePass2,
       required: true,
-      message: 'Please input full name',
+      message: 'Please confirm your password',
       trigger: 'blur',
     },
   ],
 })
+
 const router = useRouter()
-const GoToLogInForm = (SignUpRef: FormInstance | undefined) => {
-  if (!SignUpRef) return
+
+const GoToLogInForm = () => {
+  if (!SignUpRef.value) return
+
+  // Trigger validation for all fields
   SignUpRef.value.validate((valid) => {
     if (valid) {
-      console.log('submit!')
-      router.push('/')
+      inputUser.SignUp(SignUp)
+      router.push('/') // Redirect to login page or any other page
     } else {
-      console.log('error submit!')
+      console.log('Validation failed!')
     }
   })
 }
-
-// const GoToLogInForm = async () => {
-//   if (!SignUpRef.value) return
-
-//   try {
-//     await SignUpRef.value.validate()
-//     router.push('/')
-//   } catch (errors) {
-//     console.log('Registration Failed', errors)
-//   }
 </script>
