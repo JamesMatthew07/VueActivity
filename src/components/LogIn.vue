@@ -25,11 +25,11 @@
 </template>
 
 <script setup lang="ts">
-import { ElForm } from 'element-plus'
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
 import { useInputStore } from '@/stores/studentInfo'
-import { User, Lock } from '@element-plus/icons-vue'
+import { Lock, User } from '@element-plus/icons-vue'
+import { ElForm } from 'element-plus'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const inputUser = useInputStore()
 
@@ -52,7 +52,7 @@ const LogInFormRules = reactive({
 
 const router = useRouter()
 
-const GoToDisplayStudentInformation = () => {
+function GoToDisplayStudentInformation() {
   logInFormRef.value?.validate((valid) => {
     if (valid) {
       const isLoggedIn = inputUser.LogIn(LogInForm.UserName, LogInForm.Password)
@@ -88,27 +88,36 @@ body {
   height: 45px;
   background-color: transparent;
   border: 1px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .el-button {
   background-color: white;
   color: black;
   margin-top: 2vh;
+  font-family: 'Montserrat', sans-serif;
+
 }
 
 .el-input::placeholder,
 .el-button::placeholder {
   font-size: 14px !important;
   font-weight: 300;
+  font-family: 'Montserrat', sans-serif;
+
 }
 
 .el-input__inner {
   color: white;
   font-size: 14px !important;
+  font-family: 'Montserrat', sans-serif;
+
 }
 
 .forgotPassword {
   margin-top: 0%;
+  font-family: 'Montserrat', sans-serif;
+
 }
 
 /* .el-form-item {
