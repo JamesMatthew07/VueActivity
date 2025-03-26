@@ -85,7 +85,7 @@ onMounted(() => {
 const submitForm = async () => {
   if (!formRef.value) return
   
-  await formRef.value.validate((valid, fields) => {
+  await formRef.value.validate((valid) => {
     if (valid) {
       emit('submit', { ...formData })
     }
